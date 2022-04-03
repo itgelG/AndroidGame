@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.android.cy.androidmazegame.GameTimer.GameTimer;
+import com.android.cy.androidmazegame.GameTimer.GameTimerUpdateCallback;
 import com.android.cy.androidmazegame.Utils.Vector2D;
 
 /**

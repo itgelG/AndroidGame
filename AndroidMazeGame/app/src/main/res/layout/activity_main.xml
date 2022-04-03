@@ -8,14 +8,36 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.android.cy.androidmazegame.MainActivity">
 
-    <com.android.cy.androidmazegame.GameView.GameSurfaceView
-        android:id="@+id/gl_surfaece_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="#005050"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:text="Hello Android OpenGL ES Maze Game" />
 
+    <Button
+        android:id="@+id/startButton"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#008080"
+        android:paddingHorizontal="20dp"
+        android:textColor="#fff"
+        android:text="Start Game"/>
+
+    <Button
+        android:id="@+id/leaderButton"
+        android:layout_below="@+id/startButton"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#009010"
+        android:paddingHorizontal="20dp"
+        android:textColor="#fff"
+        android:layout_marginTop="10dp"
+        android:text="Leaderboard"/>
 </RelativeLayout>

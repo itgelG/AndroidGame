@@ -16,22 +16,22 @@ public class GameSurfaceView extends GLSurfaceView {
 
     private GameViewCallback mGameViewCallback;
 
-    public GameSurfaceView(Context context) {
+    public GameSurfaceView(Context context, int mapIndex) {
         super(context);
 
         setEGLContextClientVersion(2);
 
-        mGameRenderer = new GameRenderer(context, this);
+        mGameRenderer = new GameRenderer(context, this, mapIndex);
 
         setRenderer(mGameRenderer);
     }
 
-    public GameSurfaceView(Context context, AttributeSet attributeSet) {
+    public GameSurfaceView(Context context, AttributeSet attributeSet, int mapIndex) {
         super(context, attributeSet);
 
         setEGLContextClientVersion(2);
 
-        mGameRenderer = new GameRenderer(context, this);
+        mGameRenderer = new GameRenderer(context, this, mapIndex);
 
         setRenderer(mGameRenderer);
     }
@@ -44,6 +44,7 @@ public class GameSurfaceView extends GLSurfaceView {
     public void onCharacterKeyDown(int direction) {
         mGameRenderer.onKeyDown(direction);
     }
+
     public void onCharacterKeyUp() {
         mGameRenderer.onKeyUp();
     }

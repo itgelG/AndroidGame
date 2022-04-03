@@ -14,7 +14,7 @@ import static com.android.cy.androidmazegame.Scene.CharacterController.DIRECTION
 public class CharacterController {
     private Vector3D eyePos = new Vector3D();
     private Vector3D targetPos = new Vector3D(1.0f, 0.0f, 0.0f);
-    private Vector3D upDirection = new Vector3D(0.0f, 1.0f, 0.0f);;
+    private Vector3D upDirection = new Vector3D(0.0f, 1.0f, 0.0f);
     private Vector3D moveDirection = new Vector3D();;
 
     private final static float CHAR_SPEED = 10.f;
@@ -69,15 +69,8 @@ public class CharacterController {
         return mViewMatrix;
     }
 
-    public Vector3D getEyePos() { return eyePos; }
-    public Vector3D getTargetPos() { return targetPos; }
-
     public void updateTarget(Vector3D t) {
         targetPos = t;
-    }
-
-    public void updateEyePos(Vector3D e) {
-        eyePos = e;
     }
 
     public void update(float delta) {

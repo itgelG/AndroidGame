@@ -14,13 +14,13 @@ void main() {
     float distance = length(u_LightPos - v_Position);
     // Гэрлээс орой хүртэл гэрэлтүүлгийн чиглэлийн векторыг авна.
     vec3 lightVector = normalize(u_LightPos - v_Position);
-    // Хэрэв хэвийн ба гэрлийн вектор нь байвал, гэрлийн вектор ба оройн хэвийн цэгийн үржвэрийг тооцоолох
+    // Хэрэв нормал ба гэрлийн вектор нь байвал, гэрлийн вектор ба оройн нормал цэгийн үржвэрийг тооцоолох
     // ижил чиглэлд чиглүүлбэл хамгийн их гэрэлтүүлэг авах болно
     float diffuse = max(dot(v_Normal, lightVector), 0.1);
     // Унтралт нэмэх
     diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance * distance)));
     // Орчны гэрэлтүүлэг нэмнэ
-    diffuse = diffuse + 0.3;
+    diffuse = diffuse + 0.7;
     // Эцсийн гаралтын өнгийг авахын тулд өнгийг сарнисан гэрэлтүүлгийн түвшингээр үржүүлнэ
     gl_FragColor = diffuse * texture2D(u_Texture, v_TexCoordinate);
 }

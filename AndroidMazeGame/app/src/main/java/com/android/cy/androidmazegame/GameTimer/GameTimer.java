@@ -2,8 +2,6 @@ package com.android.cy.androidmazegame.GameTimer;
 
 import android.os.SystemClock;
 
-import com.android.cy.androidmazegame.GamePad.GameTimerUpdateCallback;
-
 /**
  * Created by ItgelG on 2022/2/20.
  */
@@ -23,7 +21,7 @@ public class GameTimer {
     }
 
     public String getTimeString() {
-        String t = new String("Ticking- ");
+        String t = new String("Ticking - ");
         // Minute
         t = t + (minute<10? "0": "") + minute;
         t+= ":";

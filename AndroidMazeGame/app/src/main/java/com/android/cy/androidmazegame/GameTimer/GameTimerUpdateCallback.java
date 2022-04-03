@@ -1,4 +1,4 @@
-package com.android.cy.androidmazegame.GamePad;
+package com.android.cy.androidmazegame.GameTimer;
 
 /**
  * Created by ItgelG on 2022/2/16.

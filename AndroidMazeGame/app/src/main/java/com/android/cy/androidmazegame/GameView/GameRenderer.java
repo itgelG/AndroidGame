@@ -20,17 +20,20 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  * Created by ItgelG on 2022/2/24.
  */
-public class GameRenderer implements GLSurfaceView.Renderer{
+public class GameRenderer implements GLSurfaceView.Renderer {
 
-    private BasicObject object;
     private BasicObject plane;
-    private BasicObject wall;
     private BasicObject roof;
 
-    /** CharacterController */
+
+    /**
+     * CharacterController
+     */
     private CharacterController characterController;
 
-    /** Проекцийн матрицыг хадгалах. Энэ нь дүр зургийг 2D харах талбарт тусгахад хэрэглэгддэг */
+    /**
+     * Проекцийн матрицыг хадгалах. Энэ нь дүр зургийг 2D харах талбарт тусгахад хэрэглэгддэг
+     */
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mOrthoProjectionMatrix = new float[16];
 
@@ -51,36 +54,53 @@ public class GameRenderer implements GLSurfaceView.Renderer{
      */
     private float[] mLightModelMatrix = new float[16];
 
-    /** Загварын орон зайд гарал үүсэл дээр төвлөрсөн гэрлийг барихад ашигладаг.
-     * Бидэнд 4-р координат хэрэгтэй тул үүнийг хувиргах матрицуудаараа үржүүлэхэд орчуулга хийх боломжтой болно. */
-    private final float[] mLightPosInModelSpace = new float[] {0.0f, 0.0f, 0.0f, 1.0f};
+    /**
+     * Загварын орон зайд гарал үүсэл дээр төвлөрсөн гэрлийг барихад ашигладаг.
+     * Бидэнд 4-р координат хэрэгтэй тул үүнийг хувиргах матрицуудаараа үржүүлэхэд орчуулга хийх боломжтой болно.
+     */
+    private final float[] mLightPosInModelSpace = new float[]{0.0f, 0.0f, 0.0f, 1.0f};
 
-    /** Дэлхийн орон зай дахь гэрлийн одоогийн байрлалыг барихад ашигладаг (загвар матрицаар хувиргасны дараа). */
+    /**
+     * Дэлхийн орон зай дахь гэрлийн одоогийн байрлалыг барихад ашигладаг (загвар матрицаар хувиргасны дараа).
+     */
     private final float[] mLightPosInWorldSpace = new float[4];
 
-    /** Нүдний орон зайд гэрлийн хувирсан байрлалыг барихад ашигладаг (загвар харах матрицаар хувиргасны дараа) */
+    /**
+     * Нүдний орон зайд гэрлийн хувирсан байрлалыг барихад ашигладаг (загвар харах матрицаар хувиргасны дараа)
+     */
     private final float[] mLightPosInEyeSpace = new float[4];
 
-    /** Context */
+    /**
+     * Context
+     */
     private final Context mContextHandle;
 
-    /** SceneManger */
+    /**
+     * SceneManger
+     */
     private SceneManager sceneManager;
 
-    /** Render time */
+    /**
+     * Render time
+     */
     private float startTime = 0.f;
 
     private GameSurfaceView mGameSurfaceView;
     private int mGameState = -1;
     private final static int GAME_START = 0;
+    private int mapIndex;
 
+    public GameRenderer(Context context, GameSurfaceView g, int mapIndex) {
+        mContextHandle = context;
+        mGameSurfaceView = g;
+        this.mapIndex = mapIndex;
 
-    public GameRenderer(Context context, GameSurfaceView g) { mContextHandle = context; mGameSurfaceView = g;}
+    }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         // Арын дэвсгэр тод өнгийг саарал болгох.
-        GLES20.glClearColor(0.8f, 0.5f, 0.5f, 1.0f);
+        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         // Арын нүүрийг арилгахын тулд таслах аргыг ашиглана.
         // GLES20.glEnable(GLES20.GL_CULL_FACE);
@@ -94,12 +114,12 @@ public class GameRenderer implements GLSurfaceView.Renderer{
         // Front face
         GLES20.glFrontFace(GLES20.GL_CCW);
 
-        // Create scene
-        object = new Cube(mContextHandle);
-        plane = new Plane(mContextHandle, 60.f, 60.f);
-        roof = new Plane(mContextHandle, 60.f, 60.f);
 
-        sceneManager = new SceneManager(mContextHandle);
+        // Create scene
+        plane = new Plane(mContextHandle, 60.f, 60.f, false, mapIndex);
+        roof = new Plane(mContextHandle, 60.f, 60.f, true, mapIndex);
+
+        sceneManager = new SceneManager(mContextHandle, mapIndex);
         // Shal
         sceneManager.addObject(plane);
         plane.setPosition(new Vector3D(0.0f, -5.0f, 0.0f));
@@ -151,7 +171,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
         GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
 
         // Update camera position
-        characterController.update(1/60f);
+        characterController.update(1 / 60f);
         mViewMatrix = characterController.getViewMatrix();
 
         // Гэрлийн байрлалыг тооцоол. Эргүүлж, дараа нь зай руу түлхэнэ.
@@ -191,7 +211,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
         characterController.onKeyUp();
     }
 
-    public static int loadShader(int type, String shaderCode){
+    public static int loadShader(int type, String shaderCode) {
 
         // оройн шэйдерийн төрлийг үүсгэх (GLES20.GL_VERTEX_SHADER)
         // эсвэл фрагмент шэйдерийн төрөл (GLES20.GL_FRAGMENT_SHADER)

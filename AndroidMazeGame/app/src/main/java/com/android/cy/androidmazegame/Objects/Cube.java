@@ -228,10 +228,12 @@ public class Cube extends BasicObject {
                     1.0f, 1.0f,
                     1.0f, 0.0f
             };
-    /** Allocate storage for the final combined matrix. This will be passed into the shader program. */
+    /**
+     * Allocate storage for the final combined matrix. This will be passed into the shader program.
+     */
     private float[] mMVPMatrix = new float[16];
 
-    public Cube(Context context) {
+    public Cube(Context context, int mapIndex) {
         super(context);
 
         // Initialize the buffers.
@@ -251,7 +253,12 @@ public class Cube extends BasicObject {
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
         textureBuffer.put(cubeTextureCoordinateData).position(0);
 
-        mTextureDataHandle = RawResourceReader.loadTexture(context, R.drawable.wall);
+        mTextureDataHandle = RawResourceReader.loadTexture(context,
+                mapIndex == 0 ?
+                        R.drawable.wall1: mapIndex == 1 ?
+                        R.drawable.wall2:
+                        R.drawable.wall3
+                );
     }
 
     @Override

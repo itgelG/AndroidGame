@@ -14,27 +14,29 @@ public class Plane extends BasicObject {
 
     private float[] mMVPMatrix = new float[16];
 
-    public Plane(Context context) {
-        super(context);
-
-        generatePlaneData(10.f, 10.f);
-
-        initializeBuffers();
-
-        mTextureDataHandle = RawResourceReader.loadTexture(context, R.drawable.floor);
-//        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_REPEAT);
-//        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_REPEAT);
-//        GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
-    }
-
-    public Plane(Context context, float hWidth, float hHeight) {
+    public Plane(Context context, float hWidth, float hHeight, boolean isRoof, int mapIndex) {
         super(context);
 
         generatePlaneData(hWidth, hHeight);
 
         initializeBuffers();
 
-        mTextureDataHandle = RawResourceReader.loadTexture(context, R.drawable.floor);
+        if (isRoof) {
+            mTextureDataHandle = RawResourceReader.loadTexture(context,
+                    mapIndex == 0 ?
+                            R.drawable.floor1: mapIndex == 1 ?
+                            R.drawable.floor2:
+                            R.drawable.floor3
+            );
+        } else {
+            mTextureDataHandle = RawResourceReader.loadTexture(context,
+                    mapIndex == 0 ?
+                            R.drawable.roof1: mapIndex == 1 ?
+                            R.drawable.roof2:
+                            R.drawable.roof3
+                    );
+        }
+
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_REPEAT);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_REPEAT);
         GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
@@ -105,19 +107,13 @@ public class Plane extends BasicObject {
 
         // X Y Z
         positionData = new float[]
-//                {
-//                        -hWidth, 0.0f, -hHeight,
-//                         hWidth, 0.0f, -hHeight,
-//                         hWidth, 0.0f,  hHeight,
-//                        -hWidth, 0.0f,  hHeight
-//                };
                 {
-                        -hWidth, 0.0f,  hHeight,
-                         hWidth, 0.0f, -hHeight,
+                        -hWidth, 0.0f, hHeight,
+                        hWidth, 0.0f, -hHeight,
                         -hWidth, 0.0f, -hHeight,
-                        -hWidth, 0.0f,  hHeight,
-                         hWidth, 0.0f,  hHeight,
-                         hWidth, 0.0f, -hHeight
+                        -hWidth, 0.0f, hHeight,
+                        hWidth, 0.0f, hHeight,
+                        hWidth, 0.0f, -hHeight
                 };
         colorData = new float[]
                 {
@@ -147,8 +143,8 @@ public class Plane extends BasicObject {
                         0.0f, 0.0f,
                         4.0f, 4.0f,
                         0.0f, 4.0f,
-                        0.0f,  0.0f,
-                        4.0f,  0.0f,
+                        0.0f, 0.0f,
+                        4.0f, 0.0f,
                         4.0f, 4.0f,
                 };
     }

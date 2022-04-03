@@ -4,13 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../../../../layout/custom_preview.xml" value="0.2851851851851852" />
+        <entry key="app/src/main/res/layout/activity_game.xml" value="0.18059777102330293" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.18059777102330293" />
       </map>
     </option>
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
-    <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
+    <option name="myDefaultNotNull" value="androidx.annotation.RecentlyNonNull" />
     <option name="myNullables">
       <value>
         <list size="12">

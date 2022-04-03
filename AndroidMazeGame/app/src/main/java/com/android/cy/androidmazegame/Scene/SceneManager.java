@@ -7,7 +7,6 @@ import android.opengl.Matrix;
 import com.android.cy.androidmazegame.GameView.GameRenderer;
 import com.android.cy.androidmazegame.Objects.BasicObject;
 import com.android.cy.androidmazegame.Objects.GamePad;
-import com.android.cy.androidmazegame.Objects.SkyBox;
 import com.android.cy.androidmazegame.R;
 import com.android.cy.androidmazegame.Utils.Vector3D;
 
@@ -21,7 +20,6 @@ public class SceneManager {
     private Context mContextHandle;
     private int mProgramHandle;
     private int mGamePadProgramHandle;
-    private int mSkyboxProgramHandle;
 
     private MazeMap mazeMap;
     private Vector<BasicObject> mazeObjects;
@@ -32,35 +30,25 @@ public class SceneManager {
     private float[] mModelMatrix = new float[16];
 
     private GamePad gamePad;
-    private float[] mGamePadModelMatrix = new float[16];
-    private float[] mGamePadViewMatrix = new float[16];
     private float[] mGamePadProjectionMatrix = new float[16];
 
-    private SkyBox skyBox;
-
-    public SceneManager(Context context) {
+    public SceneManager(Context context, int mapIndex) {
         mContextHandle = context;
 
         // initialize scene object
-        mazeObjects = new Vector<BasicObject>();
+        mazeObjects = new Vector<>();
 
         // shader
         mProgramHandle = generateShader();
         mGamePadProgramHandle = generateGamePadShader();
-        mSkyboxProgramHandle = generateSkyboxShader();
 
         // scene map
-        mazeMap = new MazeMap(this);
-        mazeMap.readMazeMap(mContextHandle, R.raw.testmap);
+        mazeMap = new MazeMap(this, mapIndex);
+        mazeMap.readMazeMap(mContextHandle, mapIndex == 0 ? R.raw.testmap1 : mapIndex == 1 ? R.raw.testmap2 : R.raw.testmap3);
 
         // game pad
         gamePad = new GamePad(mContextHandle);
         gamePad.setShaderHandles(mGamePadProgramHandle);
-
-        // skybox
-        skyBox = new SkyBox(mContextHandle);
-        skyBox.setShaderHandle(mSkyboxProgramHandle);
-
     }
 
     public void setViewMatrix(float[] viewMatrix) {
@@ -75,18 +63,8 @@ public class SceneManager {
         this.mGamePadProjectionMatrix = projectionMatrix;
     }
 
-    public void setGamePadViewMatrix(float[] viewMatrix) {
-        this.mGamePadViewMatrix = viewMatrix;
-    }
-
     public void setLightPosInEyeSpace(float[] lightPosInEyeSpace) {
         this.mLightPosInEyeSpace = lightPosInEyeSpace;
-    }
-
-    public void setRenderMatrices(float[] mViewMatrix, float[] mProjectionMatrix, float[] mLightPosInEyeSpace) {
-        this.mViewMatrix = mViewMatrix;
-        this.mProjectionMatrix = mProjectionMatrix;
-        this.mLightPosInEyeSpace = mLightPosInEyeSpace;
     }
 
     // render scene
@@ -109,8 +87,6 @@ public class SceneManager {
 
         // Render skybox
         Matrix.setIdentityM(mModelMatrix, 0);
-        GLES20.glUseProgram(mSkyboxProgramHandle);
-        skyBox.draw(mViewMatrix, mProjectionMatrix, mModelMatrix);
     }
 
     public void addObject(BasicObject obj) {
@@ -119,16 +95,13 @@ public class SceneManager {
         mazeObjects.add(obj);
     }
 
-    public void removeObject(BasicObject obj) {
-        mazeObjects.remove(obj);
-    }
-
     public boolean checkForCollision(float x, float y) {
         return mazeMap.checkForCollision(x, y);
     }
 
-    public Vector3D getStartPos() { return mazeMap.getStartPos(); }
-    public Vector3D getEndPos() { return mazeMap.getEndPos(); }
+    public Vector3D getStartPos() {
+        return mazeMap.getStartPos();
+    }
 
     public int generateShader() {
         int vertexShader = GameRenderer.loadShader(GLES20.GL_VERTEX_SHADER, RawResourceReader.readTextFileFromRawResource(mContextHandle, R.raw.vertex_shader));
@@ -166,23 +139,7 @@ public class SceneManager {
         return programHandle;
     }
 
-    public int generateSkyboxShader() {
-        //
-        int vertexShader = GameRenderer.loadShader(GLES20.GL_VERTEX_SHADER, RawResourceReader.readTextFileFromRawResource(mContextHandle, R.raw.skybox_vertex_shader));
-        int fragmentShader = GameRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, RawResourceReader.readTextFileFromRawResource(mContextHandle, R.raw.fragment_shader));
-
-        int programHandle = GLES20.glCreateProgram();             // create empty OpenGL Program
-        if (programHandle != 0) {
-            GLES20.glAttachShader(programHandle, vertexShader);   // add the vertex shader to program
-            GLES20.glAttachShader(programHandle, fragmentShader); // add the fragment shader to program
-
-            GLES20.glBindAttribLocation(programHandle, 0, "a_Position");
-            GLES20.glBindAttribLocation(programHandle, 1, "a_TexCoordinate");
-        }
-        GLES20.glLinkProgram(programHandle);                  // create OpenGL program executables
-
-        return programHandle;
+    public Context getContext() {
+        return mContextHandle;
     }
-
-    public Context getContext() { return mContextHandle; }
 }
