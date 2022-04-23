@@ -39,6 +39,7 @@ public class HistoryActivity extends AppCompatActivity {
     private SessionAdapter sessionAdapter;
     private RealmResults<Map> maps;
     private RecyclerView recyclerView;
+    private int selectedMapId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,10 @@ public class HistoryActivity extends AppCompatActivity {
     private void initMaps() {
         maps = database.where(Map.class).findAll();
 
+        if (maps.size() > 0) {
+            selectedMapId = maps.get(0).getId();
+        }
+
         for (Map map :
                 maps) {
             Button button = new Button(this);
@@ -78,18 +83,16 @@ public class HistoryActivity extends AppCompatActivity {
 
             switch (map.getLevel()) {
                 case 2:
-                    button.setTextColor(Color.BLUE);
                     button.setLayoutParams(params);
-
                     break;
                 case 3:
-                    button.setTextColor(Color.rgb(100, 2, 38));
                     button.setLayoutParams(params);
                     break;
                 default:
-                    button.setTextColor(Color.rgb(2, 100, 64));
                     break;
             }
+
+            button.setTag(map.getId());
 
             button.setOnClickListener(v -> {
                 getHistories(map);
@@ -104,7 +107,15 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void getHistories(Map map) {
+        selectedMapId = map.getId();
 
+        for (int i = 0; i < mapContainer.getChildCount(); i++) {
+            if (((int) mapContainer.getChildAt(i).getTag()) == selectedMapId) {
+                ((Button) mapContainer.getChildAt(i)).setTextColor(Color.rgb(100, 2, 38));
+            } else {
+                ((Button) mapContainer.getChildAt(i)).setTextColor(Color.BLACK);
+            }
+        }
 
         RealmResults<Session> sessionRealmResults = database
                 .where(Session.class)

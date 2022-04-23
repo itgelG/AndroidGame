@@ -107,6 +107,7 @@ public class GameActivity extends Activity {
 
                     database.insertOrUpdate(session);
                     database.commitTransaction();
+                    GameActivity.this.finish();
                 });
 
                 winnerModal.show();
