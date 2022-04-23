@@ -16,12 +16,12 @@ public class GameSurfaceView extends GLSurfaceView {
 
     private GameViewCallback mGameViewCallback;
 
-    public GameSurfaceView(Context context, int mapIndex) {
+    public GameSurfaceView(Context context, int mapId) {
         super(context);
 
         setEGLContextClientVersion(2);
 
-        mGameRenderer = new GameRenderer(context, this, mapIndex);
+        mGameRenderer = new GameRenderer(context, this, mapId);
 
         setRenderer(mGameRenderer);
     }

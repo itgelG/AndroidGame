@@ -23,15 +23,15 @@ public class Plane extends BasicObject {
 
         if (isRoof) {
             mTextureDataHandle = RawResourceReader.loadTexture(context,
-                    mapIndex == 0 ?
-                            R.drawable.floor1: mapIndex == 1 ?
+                    mapIndex == 1 ?
+                            R.drawable.floor1: mapIndex == 2 ?
                             R.drawable.floor2:
                             R.drawable.floor3
             );
         } else {
             mTextureDataHandle = RawResourceReader.loadTexture(context,
-                    mapIndex == 0 ?
-                            R.drawable.roof1: mapIndex == 1 ?
+                    mapIndex == 1 ?
+                            R.drawable.roof1: mapIndex == 2 ?
                             R.drawable.roof2:
                             R.drawable.roof3
                     );

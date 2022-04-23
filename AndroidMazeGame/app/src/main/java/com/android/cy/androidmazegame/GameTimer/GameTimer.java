@@ -11,6 +11,7 @@ public class GameTimer {
     private float startTime;
 
     private GameTimerUpdateCallback mGameTimerUpdateCallback;
+
     public GameTimer() {
         minute = 0;
         second = 0;
@@ -21,13 +22,17 @@ public class GameTimer {
     }
 
     public String getTimeString() {
-        String t = new String("Ticking - ");
+        String t = "Хугацаа - ";
         // Minute
-        t = t + (minute<10? "0": "") + minute;
-        t+= ":";
+        t = t + (minute < 10 ? "0" : "") + minute;
+        t += ":";
         // Second
-        t = t + (second<10? "0": "") + second;
+        t = t + (second < 10 ? "0" : "") + second;
         return t;
+    }
+
+    public int getSeconds() {
+        return minute * 60 + second;
     }
 
     public void startTimer() {

@@ -15,19 +15,23 @@ public class CharacterController {
     private Vector3D eyePos = new Vector3D();
     private Vector3D targetPos = new Vector3D(1.0f, 0.0f, 0.0f);
     private Vector3D upDirection = new Vector3D(0.0f, 1.0f, 0.0f);
-    private Vector3D moveDirection = new Vector3D();;
+    private Vector3D moveDirection = new Vector3D();
+    ;
 
     private final static float CHAR_SPEED = 10.f;
 
     public enum DIRECTION {
         IDLE(-1), LEFT(0), RIGHT(1), FORWARD(2), BACKWARD(3);
         private int value;
+
         private DIRECTION(int i) {
             value = i;
         }
+
         public int getValue() {
             return value;
         }
+
         public static DIRECTION fromInt(int i) {
             switch (i) {
                 case 0:
@@ -42,10 +46,11 @@ public class CharacterController {
                     return IDLE;
             }
         }
-    };
+    }
+
+    ;
     private DIRECTION direction = IDLE;
     /**
-     *
      * Харах матрицыг хадгалах. Үүнийг манай камер гэж ойлгож болно. Энэхүү матриц нь дэлхийн орон зайг нүдний орон зай болгон хувиргадаг;
      * Энэ нь бидний нүдтэй харьцуулахад аливаа зүйлийг байрлуулдаг.
      */
@@ -79,9 +84,14 @@ public class CharacterController {
             updateDirection();
             Vector3D destination = new Vector3D();
             Vector3D.add(destination, eyePos, Vector3D.multiplyVF(moveDirection, 3));
-            Log.v("CharacterController", destination.toString());
-            if (!sceneManager.checkForCollision(destination.x, destination.z))
+            int typeCollision = sceneManager.checkForCollision(destination.x, destination.z);
+
+            if (typeCollision == 2) {
+//                WINNER
+                sceneManager.finishForWinner();
+            } else if (typeCollision != 0) {
                 Vector3D.add(eyePos, eyePos, Vector3D.multiplyVF(moveDirection, delta * CHAR_SPEED));
+            }
         }
         updateViewMatrix();
     }

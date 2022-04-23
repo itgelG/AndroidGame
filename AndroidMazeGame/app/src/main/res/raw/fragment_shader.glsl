@@ -7,6 +7,7 @@ varying vec4 v_Color;// Оройн шэйдерээс авсан өнгө
 // фрагмент бүрт гурвалжин.
 varying vec3 v_Normal;// фрагментийн хувьд хэвийн интерполяци хийсэн
 varying vec2 v_TexCoordinate;// Фрагмент бүрт интерполяцлагдсан бүтэцтэй координат
+varying vec3 fragColour;
 
 // Манай фрагмент шэйдерийн нэвтрэх цэг
 void main() {
@@ -20,7 +21,8 @@ void main() {
     // Унтралт нэмэх
     diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance * distance)));
     // Орчны гэрэлтүүлэг нэмнэ
-    diffuse = diffuse + 0.7;
+    diffuse = diffuse + 0.9;
     // Эцсийн гаралтын өнгийг авахын тулд өнгийг сарнисан гэрэлтүүлгийн түвшингээр үржүүлнэ
     gl_FragColor = diffuse * texture2D(u_Texture, v_TexCoordinate);
+//    gl_FragColor = vec4(fragColour, 1.0);
 }

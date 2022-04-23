@@ -102,14 +102,25 @@ public class MazeMap {
         return endPos;
     }
 
-    public static boolean checkForCollision(float x, float y) {
+    public static int checkForCollision(float x, float y) {
         int tUnitX = (int) ((x + 60) / MAZE_UNIT_WIDTH);
         int tUnitY = (int) ((y + 60) / MAZE_UNIT_WIDTH);
 
-        // out of the maze map
-        if (tUnitX < 0 || tUnitY < 0)
-            return false;
-        else
-            return (rawMap[tUnitY][tUnitX] == '#');
+
+        if (rawMap.length <= tUnitY || rawMap.length <= tUnitX) {
+//            WINNER
+            return 2;
+        } else {
+            if (tUnitX < 0 || tUnitY < 0)
+//            out of the maze map
+                return -1;
+            else if (rawMap[tUnitY][tUnitX] == '#') {
+//            wall
+                return 0;
+            } else {
+//            space
+                return 1;
+            }
+        }
     }
 }

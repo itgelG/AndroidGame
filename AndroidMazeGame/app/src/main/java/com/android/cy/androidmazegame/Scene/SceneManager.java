@@ -1,9 +1,11 @@
 package com.android.cy.androidmazegame.Scene;
 
+import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
+import com.android.cy.androidmazegame.GameActivity;
 import com.android.cy.androidmazegame.GameView.GameRenderer;
 import com.android.cy.androidmazegame.Objects.BasicObject;
 import com.android.cy.androidmazegame.Objects.GamePad;
@@ -32,7 +34,7 @@ public class SceneManager {
     private GamePad gamePad;
     private float[] mGamePadProjectionMatrix = new float[16];
 
-    public SceneManager(Context context, int mapIndex) {
+    public SceneManager(Context context, int mapId) {
         mContextHandle = context;
 
         // initialize scene object
@@ -43,8 +45,8 @@ public class SceneManager {
         mGamePadProgramHandle = generateGamePadShader();
 
         // scene map
-        mazeMap = new MazeMap(this, mapIndex);
-        mazeMap.readMazeMap(mContextHandle, mapIndex == 0 ? R.raw.testmap1 : mapIndex == 1 ? R.raw.testmap2 : R.raw.testmap3);
+        mazeMap = new MazeMap(this, mapId);
+        mazeMap.readMazeMap(mContextHandle, mapId == 1 ? R.raw.testmap1 : mapId == 2 ? R.raw.testmap2 : R.raw.testmap3);
 
         // game pad
         gamePad = new GamePad(mContextHandle);
@@ -95,7 +97,7 @@ public class SceneManager {
         mazeObjects.add(obj);
     }
 
-    public boolean checkForCollision(float x, float y) {
+    public int checkForCollision(float x, float y) {
         return mazeMap.checkForCollision(x, y);
     }
 
@@ -141,5 +143,9 @@ public class SceneManager {
 
     public Context getContext() {
         return mContextHandle;
+    }
+
+    public void finishForWinner() {
+        ((GameActivity) mContextHandle).showWinnerModal();
     }
 }

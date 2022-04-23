@@ -254,8 +254,8 @@ public class Cube extends BasicObject {
         textureBuffer.put(cubeTextureCoordinateData).position(0);
 
         mTextureDataHandle = RawResourceReader.loadTexture(context,
-                mapIndex == 0 ?
-                        R.drawable.wall1: mapIndex == 1 ?
+                mapIndex == 1 ?
+                        R.drawable.wall1: mapIndex == 2 ?
                         R.drawable.wall2:
                         R.drawable.wall3
                 );

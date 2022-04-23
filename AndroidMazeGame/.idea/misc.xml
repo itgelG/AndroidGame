@@ -4,8 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../../../../layout/custom_preview.xml" value="0.2851851851851852" />
+        <entry key="app/src/main/res/drawable/ic_heart.xml" value="0.2965" />
         <entry key="app/src/main/res/layout/activity_game.xml" value="0.18059777102330293" />
+        <entry key="app/src/main/res/layout/activity_history.xml" value="0.401268115942029" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.18059777102330293" />
+        <entry key="app/src/main/res/layout/choose_map.xml" value="0.18931159420289856" />
+        <entry key="app/src/main/res/layout/item_session.xml" value="0.19934143870314083" />
+        <entry key="app/src/main/res/layout/winner_modal.xml" value="0.18931159420289856" />
       </map>
     </option>
   </component>

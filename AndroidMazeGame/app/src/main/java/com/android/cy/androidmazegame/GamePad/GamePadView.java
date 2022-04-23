@@ -13,6 +13,8 @@ import com.android.cy.androidmazegame.GameTimer.GameTimer;
 import com.android.cy.androidmazegame.GameTimer.GameTimerUpdateCallback;
 import com.android.cy.androidmazegame.Utils.Vector2D;
 
+import java.util.Date;
+
 /**
  * Created by ItgelG on 2022/2/16.
  */
@@ -22,21 +24,23 @@ public class GamePadView extends View {
     private Vector2D centerPos, leftPos, rightPos, upPos, downPos, textPos;
     private float centerRadius, gamePadRadius;
     private float hWidth, hHeight;
-    private boolean[] keyStatus = { false, false, false, false};
+    private boolean[] keyStatus = {false, false, false, false};
 
     private int pointerID = -1;
     private Vector2D touchDown = new Vector2D();
 
     private GamePadMoveCallback moveCallback;
 
+    public boolean isFinish = false;
     private GameTimer mGameTimer = new GameTimer();
+    public Date startDate;
 
     public GamePadView(Context context) {
         super(context);
+        startDate = new Date();
         // Буцах дуудлагыг шинэчлэх, цаг хэмжигч эхлэх үед тоглоомын харагдах байдлыг шинэчлэх болно
-        mGameTimer.setTimerUpdateCallback(new GameTimerUpdateCallback() {
-            @Override
-            public void onTimerUpdate() {
+        mGameTimer.setTimerUpdateCallback(() -> {
+            if (!isFinish) {
                 invalidate();
             }
         });
@@ -83,8 +87,8 @@ public class GamePadView extends View {
 
         // Buttons
         canvas.drawRect(leftPos.x - hWidth, leftPos.y - hHeight, leftPos.x + hWidth, leftPos.y + hHeight, keyStatus[0] ? keyDownPaint : keyUpPaint);
-        canvas.drawRect(rightPos.x - hWidth, rightPos.y - hHeight, rightPos.x + hWidth , rightPos.y + hHeight, keyStatus[1] ? keyDownPaint : keyUpPaint);
-        canvas.drawRect(upPos.x - hWidth, upPos.y - hHeight, upPos.x + hWidth , upPos.y + hHeight, keyStatus[2] ? keyDownPaint : keyUpPaint);
+        canvas.drawRect(rightPos.x - hWidth, rightPos.y - hHeight, rightPos.x + hWidth, rightPos.y + hHeight, keyStatus[1] ? keyDownPaint : keyUpPaint);
+        canvas.drawRect(upPos.x - hWidth, upPos.y - hHeight, upPos.x + hWidth, upPos.y + hHeight, keyStatus[2] ? keyDownPaint : keyUpPaint);
         canvas.drawRect(downPos.x - hWidth, downPos.y - hHeight, downPos.x + hWidth, downPos.y + hHeight, keyStatus[3] ? keyDownPaint : keyUpPaint);
 
         // Text
@@ -133,7 +137,7 @@ public class GamePadView extends View {
                 }
                 break;
             case MotionEvent.ACTION_MOVE: {
-                for (int i = 0; i< e.getPointerCount(); i++) {
+                for (int i = 0; i < e.getPointerCount(); i++) {
                     if (pointerID != i) {
                         processMotion(e.getX(i), e.getY(i));
                         touchDown.setXY(e.getX(i), e.getY(i));
@@ -185,7 +189,7 @@ public class GamePadView extends View {
     }
 
     private void processKeyUp() {
-        for (int i = 0; i< keyStatus.length; i++) {
+        for (int i = 0; i < keyStatus.length; i++) {
             keyStatus[i] = false;
         }
 
@@ -203,5 +207,9 @@ public class GamePadView extends View {
 
     public void startTimer() {
         mGameTimer.startTimer();
+    }
+
+    public int getTimer() {
+        return mGameTimer.getSeconds();
     }
 }

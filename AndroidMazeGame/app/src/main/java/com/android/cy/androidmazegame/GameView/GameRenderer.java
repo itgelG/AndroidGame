@@ -88,13 +88,12 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     private GameSurfaceView mGameSurfaceView;
     private int mGameState = -1;
     private final static int GAME_START = 0;
-    private int mapIndex;
+    private int mapId;
 
-    public GameRenderer(Context context, GameSurfaceView g, int mapIndex) {
+    public GameRenderer(Context context, GameSurfaceView g, int mapId) {
         mContextHandle = context;
         mGameSurfaceView = g;
-        this.mapIndex = mapIndex;
-
+        this.mapId = mapId;
     }
 
     @Override
@@ -116,10 +115,10 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
 
         // Create scene
-        plane = new Plane(mContextHandle, 60.f, 60.f, false, mapIndex);
-        roof = new Plane(mContextHandle, 60.f, 60.f, true, mapIndex);
+        plane = new Plane(mContextHandle, 60.f, 60.f, false, mapId);
+        roof = new Plane(mContextHandle, 60.f, 60.f, true, mapId);
 
-        sceneManager = new SceneManager(mContextHandle, mapIndex);
+        sceneManager = new SceneManager(mContextHandle, mapId);
         // Shal
         sceneManager.addObject(plane);
         plane.setPosition(new Vector3D(0.0f, -5.0f, 0.0f));
@@ -217,7 +216,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         // эсвэл фрагмент шэйдерийн төрөл (GLES20.GL_FRAGMENT_SHADER)
         int shader = GLES20.glCreateShader(type);
 
-        // эх кодыг шэйдерт нэмээд эмхэтгэ
+        // эх кодыг шэйдерт нэмээд эмхэтгэх
         GLES20.glShaderSource(shader, shaderCode);
         GLES20.glCompileShader(shader);
 
