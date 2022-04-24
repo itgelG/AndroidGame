@@ -120,6 +120,7 @@ public class HistoryActivity extends AppCompatActivity {
         RealmResults<Session> sessionRealmResults = database
                 .where(Session.class)
                 .equalTo("map", map.getId())
+                .sort("durationTime")
                 .findAll();
 
         sessions.clear();
